@@ -121,3 +121,8 @@ spring:
     groovy:
         template:
             check-template-location: false
+
+---
+grails:
+    gorm:
+        failOnError: true
