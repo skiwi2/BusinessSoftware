@@ -109,21 +109,6 @@ environments:
 
 ---
 grails:
-    profile: web
-    codegen:
-        defaultPackage: businesssoftware
-info:
-    app:
-        name: '@info.app.name@'
-        version: '@info.app.version@'
-        grailsVersion: '@info.app.grailsVersion@'
-spring:
-    groovy:
-        template:
-            check-template-location: false
-
----
-grails:
     gorm:
         failOnError: true
         autoFlush: true
