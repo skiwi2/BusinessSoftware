@@ -1,4 +1,4 @@
-package businesssoftware
+package com.skiwi.businesssoftware
 
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor

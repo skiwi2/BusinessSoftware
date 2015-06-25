@@ -2,7 +2,7 @@
 grails:
     profile: web
     codegen:
-        defaultPackage: businesssoftware
+        defaultPackage: com.skiwi.com.skiwi.businesssoftware
 info:
     app:
         name: '@info.app.name@'

@@ -1,4 +1,4 @@
-package businesssoftware
+package com.skiwi.businesssoftware
 
 class User {
     static constraints = {

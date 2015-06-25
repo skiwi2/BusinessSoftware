@@ -1,3 +1,5 @@
+package com.skiwi.businesssoftware
+
 class UrlMappings {
 
     static mappings = {

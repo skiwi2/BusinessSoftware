@@ -1,4 +1,4 @@
-package businesssoftware
+package com.skiwi.businesssoftware
 
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
