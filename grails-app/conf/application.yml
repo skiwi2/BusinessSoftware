@@ -126,3 +126,4 @@ spring:
 grails:
     gorm:
         failOnError: true
+        autoFlush: true
