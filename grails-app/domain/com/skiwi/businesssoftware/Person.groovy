@@ -23,5 +23,6 @@ class Person {
     String houseNumber
     String zipCode
     String email
+    List<String> telephoneNumbers
     String bankAccount
 }
