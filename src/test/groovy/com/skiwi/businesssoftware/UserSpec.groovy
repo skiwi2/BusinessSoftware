@@ -37,4 +37,20 @@ class UserSpec extends Specification {
         user.save(flush: true)
         !user2.save(failOnError: false)
     }
+
+    def "person may be attached"() {
+        def person = new Person(firstName: "John", lastName: "Doe")
+
+        when: "person not attached"
+        def user = new User(email: "john@doe.com", password: "test")
+
+        then: "user should be saved"
+        user.save()
+
+        when: "person attached"
+        user.person = person
+
+        then: "user should still be saved"
+        user.save()
+    }
 }
