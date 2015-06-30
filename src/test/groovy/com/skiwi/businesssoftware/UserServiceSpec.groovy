@@ -26,4 +26,13 @@ class UserServiceSpec extends Specification {
         userDb.person.middleName == null
         userDb.person.lastName == "Doe"
     }
+
+    def "test create two users with same email"() {
+        when: "create two users with same email"
+        service.createUser("John", null, "Doe", "info@doe.com", "johndoe")
+        service.createUser("Jane", null, "Doe", "info@doe.com", "janedoe")
+
+        then: "exception is thrown"
+        thrown(CreateUserException)
+    }
 }
