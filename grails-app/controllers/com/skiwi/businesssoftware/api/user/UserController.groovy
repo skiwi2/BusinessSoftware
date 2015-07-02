@@ -2,22 +2,18 @@ package com.skiwi.businesssoftware.api.user
 
 import com.skiwi.businesssoftware.CreateUserException
 import com.skiwi.businesssoftware.UserService
-import grails.web.controllers.ControllerMethod
 import groovy.json.JsonBuilder
 import groovy.transform.TupleConstructor
-import org.springframework.messaging.handler.annotation.MessageMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
 
-@MessageMapping("/api/user")
+@RequestMapping("/api/user")
 class UserController {
     UserService userService
 
-    def index() {
-
-    }
-
-    @ControllerMethod
-    @MessageMapping("/create_user")
-    def createUser(CreateUserMessage createUserMessage) {
+    @RequestMapping("/create_user")
+    def @ResponseBody createUser(@RequestBody CreateUserMessage createUserMessage) {
         try {
             userService.createUser(*createUserMessage.values())
             def builder = new JsonBuilder()
