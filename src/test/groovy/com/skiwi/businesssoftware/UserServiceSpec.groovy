@@ -40,15 +40,13 @@ class UserServiceSpec extends Specification {
         userDb.person.firstName == "John"
         userDb.person.middleName == null
         userDb.person.lastName == "Doe"
-    }
 
-    def "test create two users with same email"() {
-        when: "create two users with same email"
-        service.createUser("John", null, "Doe", "info@doe.com", "johndoe")
-        service.createUser("Jane", null, "Doe", "info@doe.com", "janedoe")
+        when: "create another user with the same email"
+        service.createUser("Jane", null, "Doe", "john@doe.com", "janedoe")
 
-        then: "exception is thrown"
-        thrown(CreateUserException)
+        then: "email is already in use"
+        def ex = thrown(CreateUserException)
+        ex.message == "EMAIL_IN_USE"
     }
 
     def "test login user"() {
