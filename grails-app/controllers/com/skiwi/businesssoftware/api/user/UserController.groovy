@@ -1,6 +1,7 @@
 package com.skiwi.businesssoftware.api.user
 
 import com.skiwi.businesssoftware.CreateUserException
+import com.skiwi.businesssoftware.LoginUserException
 import com.skiwi.businesssoftware.UserService
 import groovy.json.JsonBuilder
 import groovy.transform.TupleConstructor
@@ -28,6 +29,52 @@ class UserController {
             }
         }
     }
+
+    @RequestMapping("/login_user")
+    def @ResponseBody loginUser(@RequestBody LoginUserMessage loginUserMessage) {
+        if (session.user) {
+            def builder = new JsonBuilder()
+            return builder {
+                success false
+                message "ALREADY_LOGGED_IN"
+            }
+        }
+
+        try {
+            def user = userService.loginUser(*loginUserMessage.values())
+            session.user = user
+            session.token = UUID.randomUUID().toString()
+            def builder = new JsonBuilder()
+            builder {
+                success true
+                token session.token
+            }
+        } catch (LoginUserException ex) {
+            def builder = new JsonBuilder()
+            builder {
+                success false
+                message ex.message
+            }
+        }
+    }
+
+    @RequestMapping("/logout_user")
+    def @ResponseBody logoutUser(@RequestBody Object object) {
+        if (!session.user) {
+            def builder = new JsonBuilder()
+            return builder {
+                success false
+                message "NOT_LOGGED_IN"
+            }
+        }
+
+        session.user = null
+        session.token = null
+        def builder = new JsonBuilder()
+        builder {
+            success true
+        }
+    }
 }
 
 @TupleConstructor
@@ -40,5 +87,15 @@ class CreateUserMessage {
 
     List values() {
         return [firstName, middleName, lastName, email, password]
+    }
+}
+
+@TupleConstructor
+class LoginUserMessage {
+    String email
+    String password
+
+    List values() {
+        return [email, password]
     }
 }

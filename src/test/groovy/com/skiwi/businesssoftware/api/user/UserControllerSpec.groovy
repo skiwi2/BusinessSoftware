@@ -41,4 +41,53 @@ class UserControllerSpec extends Specification {
         result2.message == "EMAIL_IN_USE"
         User.countByEmail("info@doe.com") == 1
     }
+
+    def "login user"() {
+        controller.createUser(new CreateUserMessage("John", null, "Doe", "john@doe.com", "johndoe"))
+
+        when: "invalid user data"
+        def result = controller.loginUser(new LoginUserMessage("info@doe.com", "johndoe"))
+
+        then: "no success"
+        !result.success
+        result.message == "EMAIL_NOT_FOUND"
+        session.user == null
+        session.token == null
+
+        when: "correct login data"
+        def expectedUser = User.findByEmail("john@doe.com")
+        def result2 = controller.loginUser(new LoginUserMessage("john@doe.com", "johndoe"))
+
+        then: "success and user is saved into session"
+        result2.success
+        session.user == expectedUser
+        session.token != null
+
+        when: "already logged in"
+        def result3 = controller.loginUser(new LoginUserMessage("john@doe.com", "johndoe"))
+
+        then: "no success"
+        !result3.success
+        result3.message == "ALREADY_LOGGED_IN"
+    }
+
+    def "logout user"() {
+        controller.createUser(new CreateUserMessage("John", null, "Doe", "john@doe.com", "johndoe"))
+
+        when: "user is not logged in"
+        def result = controller.logoutUser(new Object())
+
+        then: "no success"
+        !result.success
+        result.message == "NOT_LOGGED_IN"
+
+        when: "user is logged in"
+        controller.loginUser(new LoginUserMessage("john@doe.com", "johndoe"))
+
+        then: "success"
+        def result2 = controller.logoutUser(new Object())
+        result2.success
+        session.user == null
+        session.token == null
+    }
 }
