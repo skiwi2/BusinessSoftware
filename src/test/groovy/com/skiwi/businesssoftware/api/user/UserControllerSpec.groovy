@@ -38,7 +38,7 @@ class UserControllerSpec extends Specification {
 
         then: "no success result and user is not created"
         !result2.success
-        result2.message
+        result2.message == "EMAIL_IN_USE"
         User.countByEmail("info@doe.com") == 1
     }
 }
