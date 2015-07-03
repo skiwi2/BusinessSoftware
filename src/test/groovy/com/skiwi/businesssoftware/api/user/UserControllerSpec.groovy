@@ -29,14 +29,14 @@ class UserControllerSpec extends Specification {
         when: "first user created"
         def result = controller.createUser(new CreateUserMessage("John", null, "Doe", "info@doe.com", "johndoe"))
 
-        then: "success result and user is created"
+        then: "success and user is created"
         result.success
         User.countByEmail("info@doe.com") == 1
 
         when: "second user created with same email"
         def result2 = controller.createUser(new CreateUserMessage("Jane", null, "Doe", "info@doe.com", "johndoe"))
 
-        then: "no success result and user is not created"
+        then: "no success and user is not created"
         !result2.success
         result2.message == "EMAIL_IN_USE"
         User.countByEmail("info@doe.com") == 1
